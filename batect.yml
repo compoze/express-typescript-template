@@ -1,0 +1,79 @@
+containers:
+  deploy-env:
+    image: elkodev/ruby-dpl-image:f179fb18eeb91ac0421c8e9bd7f51715eb9a44c2
+    volumes:
+      - local: .
+        container: /code
+        options: cached
+
+    working_directory: /code
+  build-env:
+    image: larse514/circle-ci-node-docker:batect
+    volumes:
+      - local: .
+        container: /code
+        options: cached
+    working_directory: /code
+tasks:
+  dependencies:
+    description: Install project dependencies
+    group: Build tasks
+    run:
+      container: build-env
+      command: ./scripts/dependencies.sh
+  build:
+    description: Compile application typescript to javascript.
+    group: Build tasks
+    run:
+      container: build-env
+      command: ./scripts/build.sh
+  test:
+    description: Run unit tests for application
+    group: Test tasks
+    run:
+      container: build-env
+      command: ./scripts/test.sh
+      environment:
+        CI: "true"
+  testWatch:
+    description: Run unit tests for application
+    group: Test tasks
+    run:
+      container: build-env
+      command: ./scripts/test.sh
+  runLocal:
+    description: Run app locally.
+    group: Deploy tasks
+    run:
+      ports:
+      - local: 5000
+        container: 5000
+      container: build-env
+      command: ./scripts/local.sh
+  deployDev:
+    description: Deploy app to dev
+    group: Deploy tasks
+    run:
+      container: deploy-env
+      command: ./scripts/deploy.sh
+      environment:
+        APP_NAME: dev-myapp
+        HEROKU_API_KEY: ${HEROKU_API_KEY}
+  deployStage:
+    description: Deploy app to stage
+    group: Deploy tasks
+    run:
+      container: deploy-env
+      command: ./scripts/deploy.sh
+      environment:
+        APP_NAME: stage-myapp
+        HEROKU_API_KEY: ${HEROKU_API_KEY}
+  deployProd:
+    description: Deploy app to prod
+    group: Deploy tasks
+    run:
+      container: deploy-env
+      command: ./scripts/deploy.sh
+      environment:
+        APP_NAME: prod-myapp
+        HEROKU_API_KEY: ${HEROKU_API_KEY}

@@ -1,0 +1,36 @@
+image: elkodev/base-docker-ci-image:1ead4de5015c981ad82c09858da8ff6a1e061214 
+
+services:
+  - docker:dind
+
+stages:
+- buildTest
+- deployDev
+- deployStage
+- deployProd
+
+buildTest:
+  stage: buildTest
+  script:
+    - ./batect --docker-host tcp://docker:2375/ build
+    - ./batect --docker-host tcp://docker:2375/ test
+deployDev:
+  only:
+      - master
+  stage: deployDev
+  script:
+  - ./batect --docker-host tcp://docker:2375/ deployDev
+deployStage:
+  only:
+      - master
+  stage: deployStage
+  when: manual
+  script:
+  - ./batect --docker-host tcp://docker:2375/ deployStage
+deployProd:
+  only:
+      - master
+  stage: deployProd
+  when: manual
+  script:
+  - ./batect --docker-host tcp://docker:2375/ deployProd 
