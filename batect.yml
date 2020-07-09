@@ -1,12 +1,14 @@
 containers:
-  deploy-env:
-    image: elkodev/ruby-dpl-image:f179fb18eeb91ac0421c8e9bd7f51715eb9a44c2
+  docker-push-env:
+    build_directory: .batect/docker-push-env
     volumes:
       - local: .
         container: /code
         options: cached
-
+      - local: /var/run/docker.sock
+        container: /var/run/docker.sock
     working_directory: /code
+
   build-env:
     image: node:13.8.0
     volumes:
