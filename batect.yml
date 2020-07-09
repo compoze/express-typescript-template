@@ -8,7 +8,7 @@ containers:
 
     working_directory: /code
   build-env:
-    image: larse514/circle-ci-node-docker:batect
+    image: node:13.8.0
     volumes:
       - local: .
         container: /code
