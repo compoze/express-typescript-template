@@ -1,5 +1,6 @@
 import * as express from 'express'
 import { Application } from 'express'
+const cors = require('cors');
 
 class App {
     public app: Application
@@ -31,6 +32,14 @@ class App {
     }
 
     public listen() {
+        //create basic health check
+        this.app.get('/health', function (req, res) {
+            res.send('OK');
+        });
+
+        //add cors
+        this.app.use(cors());
+
         this.app.listen(this.port, () => {
             console.log(`App listening on the http://localhost:${this.port}`)
         })

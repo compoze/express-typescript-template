@@ -2,4 +2,6 @@
 
 set -euo pipefail
 
-NODE_ENV=development npm start
+# Need to build for typeorm models
+npm i
+npm run start-local

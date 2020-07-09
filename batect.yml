@@ -14,6 +14,11 @@ containers:
         container: /code
         options: cached
     working_directory: /code
+  database:
+    build_directory: .batect/database
+    ports:
+      - local: 5432
+        container: 5432
 tasks:
   dependencies:
     description: Install project dependencies
@@ -27,6 +32,8 @@ tasks:
     run:
       container: build-env
       command: ./scripts/build.sh
+      environment:
+        AUTH_CONFIG: ${AUTH_CONFIG}
   test:
     description: Run unit tests for application
     group: Test tasks
@@ -35,13 +42,21 @@ tasks:
       command: ./scripts/test.sh
       environment:
         CI: "true"
+  database:
+    description: database
+    group: Test tasks
+    run:
+      container: database
+      ports:
+        - local: 5432
+          container: 5432
   testWatch:
     description: Run unit tests for application
     group: Test tasks
     run:
       container: build-env
       command: ./scripts/test.sh
-  runLocal:
+  app:
     description: Run app locally.
     group: Deploy tasks
     run:
@@ -50,30 +65,22 @@ tasks:
         container: 5000
       container: build-env
       command: ./scripts/local.sh
-  deployDev:
-    description: Deploy app to dev
+      environment:
+        NODE_ENV: local
+        DATABASE_URL: postgres://admin:admin@database:5432/myapp
+        TYPEORM_SYNCHRONIZE: "true"
+        TYPEORM_ENTITIES: dist/models/*.js
+        TYPEORM_LOGGING: "true"
+        GOOGLE_APPLICATION_CREDENTIALS: config/spawn-platform.json
+        AUTH_CONFIG: ${AUTH_CONFIG}
+    dependencies:
+      - database
+  deploy:
+    description: Deploy app
     group: Deploy tasks
     run:
-      container: deploy-env
-      command: ./scripts/deploy.sh
+      container: docker-push-env
+      command: ./.batect/buildAndPushHeroku.sh
       environment:
-        APP_NAME: dev-myapp
         HEROKU_API_KEY: ${HEROKU_API_KEY}
-  deployStage:
-    description: Deploy app to stage
-    group: Deploy tasks
-    run:
-      container: deploy-env
-      command: ./scripts/deploy.sh
-      environment:
-        APP_NAME: stage-myapp
-        HEROKU_API_KEY: ${HEROKU_API_KEY}
-  deployProd:
-    description: Deploy app to prod
-    group: Deploy tasks
-    run:
-      container: deploy-env
-      command: ./scripts/deploy.sh
-      environment:
-        APP_NAME: prod-myapp
-        HEROKU_API_KEY: ${HEROKU_API_KEY}
+        APP_NAME: myapp-${ENV}
