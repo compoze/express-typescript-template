@@ -2,9 +2,6 @@
 
 set -eu pipefail
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_DIR="$SCRIPT_DIR/.."
-
 echo "logging into Heroku..."
 docker login --username=_ --password=$HEROKU_API_KEY registry.heroku.com
 
