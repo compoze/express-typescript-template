@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "config": {
+    "projectName": "myapp",
+    "webAppName": "1:1095344010247:web:6e16064718094a3b8a66a2"
+  },
   "scripts": {
     "dev": "ts-node src/server.ts",
     "start": "npm run build && ts-node dist/server.js",
