@@ -86,3 +86,11 @@ tasks:
       environment:
         HEROKU_API_KEY: ${HEROKU_API_KEY}
         APP_NAME: myapp-${ENV}
+  qualityScan:
+    description: Code Quality Scan
+    group: Test tasks
+    run:
+      container: build-env
+      command: node sonar-scan.js
+      environment:
+        CODE_QUALITY_TOKEN: ${CODE_QUALITY_TOKEN}
