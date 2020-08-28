@@ -5,7 +5,7 @@
   "main": "index.js",
   "config": {
     "projectName": "myapp",
-    "webAppName": "1:1095344010247:web:6e16064718094a3b8a66a2"
+    "webAppName": "1:981607418561:web:62fd69e51d116dda45e240"
   },
   "scripts": {
     "dev": "ts-node src/server.ts",
