@@ -7,7 +7,7 @@ scanner(
     options: {
       'sonar.projectName': 'myapp',
       'sonar.projectDescription': 'myapp express project',
-      'sonar.sources': 'dist',
+      'sonar.sources': 'src',
       'sonar.tests': '__tests__'
     }
   },
