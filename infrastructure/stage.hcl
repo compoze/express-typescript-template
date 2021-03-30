@@ -1,1 +1,1 @@
-workspaces { name = "component-name-postgres-stage" }
+workspaces { name = "test-org-compoze-myapp-stage" }

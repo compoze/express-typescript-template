@@ -1,1 +1,1 @@
-workspaces { name = "mypp-prod" }
+workspaces { name = "test-org-compoze-mypp-prod" }
