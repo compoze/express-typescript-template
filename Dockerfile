@@ -24,7 +24,10 @@ HEALTHCHECK --interval=30s CMD node healthcheck.js
 # copy in our source code last, as it changes the most
 # copy in as node user, so permissions match what we need
 WORKDIR /opt/node_app/app
-COPY --chown=node:node . .
+COPY --chown=node:node dist .
+## need to include package.json as well
+COPY --chown=node:node package.json .
+COPY --chown=node:node node_modules .
 
 COPY docker-entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["docker-entrypoint.sh"]
@@ -34,4 +37,4 @@ ENTRYPOINT ["docker-entrypoint.sh"]
 # so that signals are passed properly. Note the code in index.js is needed to catch Docker signals
 # using node here is still more graceful stopping then npm with --init afaik
 # I still can't come up with a good production way to run with npm and graceful shutdown
-CMD [ "node", "./bin/www" ]
+CMD [ "npm", "run", "start" ]

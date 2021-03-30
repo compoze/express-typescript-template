@@ -8,15 +8,18 @@
     "webAppName": "1:981607418561:web:62fd69e51d116dda45e240"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "./scripts/build_tag.sh $npm_package_config_projectName $npm_package_version",
+    "build:app": "tsc",
     "build:watch": "tsc -w",
     "clean": "rimraf node_modules dist .scannerwork",
-    "start": "node app.js",
+    "initialize": "./scripts/init.sh",
+    "deploy": "",
+    "start": "node server.js",
     "start:watch": "nodemon --debug=5858",
     "start:watch:debugger": "nodemon --inspect-brk=0.0.0.0:9229",
     "test": "jest --config=jest.config.js",
-    "test:watch": "jest --config=jest.config.js --watch",
-    "initialize": "./scripts/init.sh"
+    "test:smoke": "npm run build && ./scripts/container_smoke_test.sh $npm_package_config_projectName $npm_package_version",
+    "test:watch": "jest --config=jest.config.js --watch"
   },
   "author": "",
   "license": "ISC",
