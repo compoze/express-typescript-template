@@ -13,8 +13,8 @@ class PostsController implements IControllerBase {
     private posts: IPost[] = [
         {
             id: 1,
-            author: 'Ali GOREN',
-            content: 'This is an example post',
+            author: 'compoze',
+            content: 'This is an post for the endpoints',
             title: 'Hello world!'
         }
     ]
