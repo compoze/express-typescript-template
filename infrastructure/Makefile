@@ -88,8 +88,14 @@ qa: check-run-deps ## Select the qa workspace
 		echo "$(BOLD)$(GREEN)qa workspace selected$(RESET)"; \
 	fi
 
+login:
+	@terraform login
+	
 plan: check-workspace ## Show terraform plan for the current workspace.
 	@terraform plan
+
+generate-token-file:
+	scripts/create_token_file.sh
 
 apply: check-workspace ## Show terraform cloud url
 	@terraform apply -auto-approve
