@@ -8,33 +8,31 @@
     "webAppName": "1:981607418561:web:62fd69e51d116dda45e240"
   },
   "scripts": {
-    "dev": "ts-node src/server.ts",
+    "build": "tsc",
+    "build:watch": "tsc -w",
     "clean": "rimraf node_modules dist .scannerwork",
-    "start": "npm run build && ts-node dist/server.js",
-    "start-local": "rm -rf dist && npm run build && npm run watch",
-    "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"cyan.bold,green.bold\" \"npm run watch-ts\" \"npm run serve\"",
-    "serve": "nodemon dist/server.js",
-    "build": "tsc -p .",
-    "watch-ts": "tsc -w",
-    "test": "jest --config=jest.config.js"
+    "start": "node app.js",
+    "start:watch": "nodemon --debug=5858",
+    "start:watch:debugger": "nodemon --inspect-brk=0.0.0.0:9229",
+    "test": "jest --config=jest.config.js",
+    "test:watch": "jest --config=jest.config.js --watch"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "concurrently": "^5.2.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "nodemon": "^2.0.4",
-    "ts-jest": "^26.1.1",
-    "ts-node": "^8.4.1",
+    "ts-node": "^9.1.1",
     "typescript": "^3.6.3"
   },
   "devDependencies": {
     "@types/express": "^4.17.1",
-    "@types/node": "^12.7.8",
-    "@types/jest": "^25.1.3",
+    "@types/jest": "^26.0.22",
+    "@types/node": "^14.14.36",
+    "jest": "^26.6.3",
+    "nodemon": "^2.0.4",
     "rimraf": "^3.0.2",
     "sonarqube-scanner": "^2.7.0",
-    "jest": "^25.1.0"
+    "ts-jest": "^26.5.4"
   }
 }

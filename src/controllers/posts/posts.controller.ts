@@ -3,6 +3,9 @@ import { Request, Response } from 'express'
 import IPost from './post.interface'
 import IControllerBase from 'interfaces/IControllerBase.interface'
 
+/**
+ * Example Express Controller. This demonstrates POST, GET, and GET :id
+ */
 class PostsController implements IControllerBase {
     public path = '/posts'
     public router = express.Router()

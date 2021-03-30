@@ -1,27 +1,37 @@
-FROM node:12 AS build
 
-COPY . ./
+FROM node:12-slim
 
-# potential performance optimization from https://github.com/npm/npm/issues/8836
-RUN npm config set registry https://registry.npmjs.org/
+ARG NODE_ENV=production
+ENV NODE_ENV $NODE_ENV
 
-# RUN npm i
-# RUN npm run build
+# default to port 3000 for node, and 9229 and 9230 (tests) for debug
+ARG PORT=5000
+ENV PORT $PORT
+EXPOSE $PORT 9229 9230
 
-## Second stage image to be implemented 
-# FROM node:12
+RUN npm i npm@latest -g
 
-# WORKDIR /usr/src/app
-# COPY package.json ./
+RUN mkdir /opt/node_app && chown node:node /opt/node_app
+WORKDIR /opt/node_app
 
-# ## Move the UI server into ./dist, and create a public/ folder to serve from
-# COPY --from=build dist ./dist
-# # Need to do this so the Firebase config can be generated at runtime (don't have to keep static credentials)
-# COPY --from=build scripts ./scripts
-# COPY --from=build node_modules ./node_modules
-# # Need to manually pull over schema for runtime
-# COPY --from=build src/graphql/schema.graphql ./dist/graphql
+USER node
+COPY --chown=node:node package.json package-lock.json* ./
+RUN npm install --no-optional && npm cache clean --force
+ENV PATH /opt/node_app/node_modules/.bin:$PATH
 
-EXPOSE 4000
+HEALTHCHECK --interval=30s CMD node healthcheck.js
 
-CMD npm run start
+# copy in our source code last, as it changes the most
+# copy in as node user, so permissions match what we need
+WORKDIR /opt/node_app/app
+COPY --chown=node:node . .
+
+COPY docker-entrypoint.sh /usr/local/bin/
+ENTRYPOINT ["docker-entrypoint.sh"]
+
+
+# if you want to use npm start instead, then use `docker run --init in production`
+# so that signals are passed properly. Note the code in index.js is needed to catch Docker signals
+# using node here is still more graceful stopping then npm with --init afaik
+# I still can't come up with a good production way to run with npm and graceful shutdown
+CMD [ "node", "./bin/www" ]

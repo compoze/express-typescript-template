@@ -39,7 +39,6 @@ class App {
 
         //add cors
         this.app.use(cors());
-
         this.app.listen(this.port, () => {
             console.log(`App listening on the http://localhost:${this.port}`)
         })
