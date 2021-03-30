@@ -3,16 +3,25 @@
 set -euo pipefail
 
 APP_NAME=$1
-ENV=$2
+VERSION=$2
+REGION=$3
+# NOTE - this always needs to be the last param so it can be passed in on the command line
+ENV=$4
 
-if [ "$ENV" != "dev" ] && [ "$ENV" != "stage" ] && [ "$ENV" != "prod" ]
-then
-    echo "$ENV is not a valid environment, must be either dev, stage, or prod"
+## declare functions
+. ./scripts/login.sh
+. ./scripts/push.sh
+. ./scripts/restart_service.sh
+
+if [[ -z "${ENV}" ]]; then
+    echo "$ENV is not a valid environment, must be either dev, stage, or prod; re-run with npm run deploy <environment>"
     exit 1
 else 
     echo "Deploying to $ENV..."
+    # AWS_ACCOUNT_ID is an environment variable
+    login "$AWS_ACCOUNT_ID" "$REGION"
+    echo "login successful"
+    push "$AWS_ACCOUNT_ID" "$REGION" "$APP_NAME" "$VERSION"
+    echo "successfully pushed to repository"
+    restart "$APP_NAME" "$ENV"
 fi
-
-gem install dpl
-
-dpl --provider=heroku --app="$APP_NAME-$ENV" --api-key=$HEROKU_API_KEY

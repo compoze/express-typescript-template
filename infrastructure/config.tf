@@ -19,6 +19,7 @@ data "terraform_remote_state" "route-53" {
     }
   }
 }
+
 data "aws_vpc" "selected" {
   id = data.terraform_remote_state.vpc.outputs.vpc_id
 }
