@@ -15,7 +15,8 @@ data "terraform_remote_state" "route-53" {
   config = {
     organization = "test-org-compoze"
     workspaces = {
-      name = "test-org-compoze-route53-${local.environment}"
+      # It is worth noting - route53 will always be production
+      name = "test-org-compoze-route53-prod"
     }
   }
 }
