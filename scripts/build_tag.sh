@@ -1,9 +1,13 @@
 #!/usr/bin/env bash
 
 set -euo pipefail
-IMAGE=$1
+
+APP_NAME=$1
 TAG=$2
 
-echo "building ${IMAGE}:${TAG}"
+
+echo "installing dependencies"
+npm ci
+echo "building ${APP_NAME}:${TAG}"
 npm run build:app
-docker build . -t "${IMAGE}:${TAG}"
+docker build . -t "${APP_NAME}:${TAG}"
