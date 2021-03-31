@@ -1,1 +1,1 @@
-workspaces { name = "test-org-compoze-myapp-stage" }
+workspaces { name = "myapp-stage" }
