@@ -24,7 +24,7 @@ else
     # AWS_ACCOUNT_ID is an environment variable
     login "$AWS_ACCOUNT_ID" "$REGION"
     echo "login successful"
-    push "$AWS_ACCOUNT_ID" "$REGION" "$APP_NAME" "$VERSION"
+    push "$AWS_ACCOUNT_ID" "$REGION" "$APP_NAME" "$VERSION" "$ENV"
     echo "successfully pushed to repository"
     restart "$APP_NAME" "$ENV"
 fi
