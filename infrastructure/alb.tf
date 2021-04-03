@@ -105,19 +105,3 @@ resource "aws_security_group" "alb" {
   },
   )
 }
-
-# TODO: Make sure CI/CD no longer needs this and remove
-resource "aws_ssm_parameter" "alb_dns_name" {
-  description = "Managed by Terraform"
-  name        = "/${var.environment}/${var.name}/alb_dns_name"
-  type        = "String"
-  value       = aws_lb.alb.dns_name
-  overwrite   = true
-
-  tags = merge(
-  local.common_tags,
-  {
-    "Name" = "alb_dns_name"
-  },
-  )
-}
