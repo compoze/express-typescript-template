@@ -332,7 +332,7 @@ EOF
 
 
 resource "aws_acm_certificate" "compoze_acm" {
-  domain_name               = var.domain_name
+  domain_name               = local.domain_name
   validation_method         = "DNS"
   subject_alternative_names = [local.dns_name]
   tags = {
