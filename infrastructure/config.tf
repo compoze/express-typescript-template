@@ -42,7 +42,7 @@ locals {
   public_subnets_id = data.terraform_remote_state.vpc.outputs.public_subnets
   //  bastion_sg_id        = data.terraform_remote_state.vpc.outputs.bastion_sg_id
   domain_prefix = var.production ? "" : "${var.environment}."
-  dns_name = "api.${local.domain_prefix}compozeengineering.com"
+  dns_name = "api.${local.domain_prefix}compozesandbox.com"
   platform = "compoze"
 
   input_queue_name = local.name
