@@ -43,7 +43,7 @@ resource "aws_lb_listener" "https" {
   port              = 443
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-2015-05"
-  certificate_arn   = data.terraform_remote_state.route-53.outputs.acm_certificate_arn
+  certificate_arn   = aws_acm_certificate.compoze_acm.arn
 
   default_action {
     target_group_arn = aws_lb_target_group.target.id
