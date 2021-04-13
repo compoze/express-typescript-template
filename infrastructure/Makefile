@@ -31,6 +31,9 @@ check-workspace: check-run-deps
 	  exit 1; \
 	fi
 
+set-workspace: check-run-deps
+	terraform init -backend-config=$(ENVIRONMENT).hcl -var-file=$(ENVIRONMENT).tfvars -reconfigure; \
+
 check-run-deps:
 	@if ! jq -h > /dev/null 2>&1; then \
 	  echo "$(BOLD)$(RED)Aborting - jq is required$(RESET)"; \
@@ -60,32 +63,19 @@ install: check-install-deps ## Download and install terraform in /usr/local/bin/
 	@sudo mv -f -v /tmp/terraform /usr/local/bin/terraform
 	@terraform -version
 
-dev: check-run-deps ## Select the dev workspace.
-	@if [ "$(ENVIRONMENT)" != "dev" ]; then \
-		terraform init -backend-config=dev.hcl -reconfigure; \
-	else \
-		echo "$(BOLD)$(GREEN)dev workspace selected$(RESET)"; \
+dev: check-run-deps set-workspace generate-auto-vars ## Select the dev workspace.
+	@if [ "$(ENVIRONMENT)" == "dev" ]; then \
+		echo "$(BOLD)$(GREEN)dev workspace selected$(RESET)"; \	
 	fi
 
-prod: check-run-deps ## Select the production workspace.
-	@if [ "$(ENVIRONMENT)" != "prod" ]; then \
-		terraform init -backend-config=prod.hcl -reconfigure; \
-	else \
-		echo "$(BOLD)$(GREEN)prod workspace selected$(RESET)"; \
+prod: check-run-deps set-workspace generate-auto-vars ## Select the production workspace.
+	@if [ "$(ENVIRONMENT)" == "prod" ]; then \
+		echo "$(BOLD)$(GREEN)prod workspace selected$(RESET)"; \	
 	fi
 
-stage: check-run-deps ## Select the stage workspace
-	@if [ "$(ENVIRONMENT)" != "stage" ]; then \
-		terraform init -backend-config=stage.hcl -reconfigure; \
-	else \
-		echo "$(BOLD)$(GREEN)stage workspace selected$(RESET)"; \
-	fi
-
-qa: check-run-deps ## Select the qa workspace
-	@if [ "$(ENVIRONMENT)" != "qa" ]; then \
-		terraform init -backend-config=qa.hcl -reconfigure; \
-	else \
-		echo "$(BOLD)$(GREEN)qa workspace selected$(RESET)"; \
+stage: check-run-deps set-workspace generate-auto-vars ## Select the stage workspace
+	@if [ "$(ENVIRONMENT)" == "stage" ]; then \
+		echo "$(BOLD)$(GREEN)stage workspace selected$(RESET)"; \	
 	fi
 
 login:
@@ -96,6 +86,9 @@ plan: check-workspace ## Show terraform plan for the current workspace.
 
 generate-token-file:
 	scripts/create_token_file.sh
+
+generate-auto-vars:
+	scripts/create_auto_vars.sh $(ENVIRONMENT)
 
 apply: check-workspace ## Show terraform cloud url
 	@terraform apply -auto-approve
