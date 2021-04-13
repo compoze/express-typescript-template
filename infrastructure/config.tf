@@ -4,7 +4,8 @@ data "terraform_remote_state" "vpc" {
   config = {
     organization = "test-org-compoze"
     workspaces = {
-      name = "test-org-compoze-vpc-${local.environment}"
+      # defaulting to production only vpc
+      name = "test-org-compoze-vpc-${local.infra_environment}"
     }
   }
 }
@@ -16,7 +17,7 @@ data "terraform_remote_state" "route-53" {
     organization = "test-org-compoze"
     workspaces = {
       # It is worth noting - route53 will always be production
-      name = "test-org-compoze-route53-prod"
+      name = "test-org-compoze-route53-${local.infra_environment}"
     }
   }
 }
@@ -40,6 +41,7 @@ locals {
   domain_name        = trimsuffix(local.domain, ".")
   name               = "${var.name}-${var.environment}"
   environment        = var.environment
+  infra_environment  = "prod" # default infrastructure environment is production. route53 will generally always be production (could eventually remove environment enitrely) but for  remaining environments we will default to prod for MVP
   vpc_id             = data.terraform_remote_state.vpc.outputs.vpc_id
   private_subnets_id = data.terraform_remote_state.vpc.outputs.private_subnets
   public_subnets_id  = data.terraform_remote_state.vpc.outputs.public_subnets

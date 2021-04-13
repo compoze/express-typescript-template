@@ -1,0 +1,10 @@
+FROM postgres:12.2
+
+RUN mkdir -p /tools
+COPY health-check.sh /tools/
+
+HEALTHCHECK --interval=1s --retries=10 CMD /tools/health-check.sh
+ENV POSTGRES_USER=admin
+ENV POSTGRES_PASSWORD=admin
+ENV POSTGRES_DB=myapp
+COPY create-structure.sql /docker-entrypoint-initdb.d/

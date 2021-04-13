@@ -28,7 +28,9 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "pg": "^8.5.1",
     "ts-node": "^9.1.1",
+    "typeorm": "^0.2.32",
     "typescript": "^3.6.3"
   },
   "devDependencies": {
