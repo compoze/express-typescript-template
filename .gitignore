@@ -7,3 +7,4 @@ local.env
 .scannerwork
 infrastructure/.terraformrc
 infrastructure/.terraform
+infrastructure/*.auto.tfvars

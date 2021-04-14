@@ -82,17 +82,17 @@ install: check-install-deps ## Download and install terraform in /usr/local/bin/
 
 dev: check-run-deps set-workspace-dev generate-auto-vars ## Select the dev workspace.
 	@if [ "$(ENVIRONMENT)" == "dev" ]; then \
-		echo "$(BOLD)$(GREEN)dev workspace selected$(RESET)"; \	
+	  echo "$(BOLD)$(GREEN)dev workspace selected$(RESET)"; \
 	fi
 
 prod: check-run-deps set-workspace-prod generate-auto-vars ## Select the production workspace.
 	@if [ "$(ENVIRONMENT)" == "prod" ]; then \
-		echo "$(BOLD)$(GREEN)prod workspace selected$(RESET)"; \	
+		echo "$(BOLD)$(GREEN)prod workspace selected$(RESET)"; \
 	fi
 
 stage: check-run-deps set-workspace-stage generate-auto-vars ## Select the stage workspace
 	@if [ "$(ENVIRONMENT)" == "stage" ]; then \
-		echo "$(BOLD)$(GREEN)stage workspace selected$(RESET)"; \	
+		echo "$(BOLD)$(GREEN)stage workspace selected$(RESET)"; \
 	fi
 
 login:
