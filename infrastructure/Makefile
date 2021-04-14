@@ -31,8 +31,25 @@ check-workspace: check-run-deps
 	  exit 1; \
 	fi
 
-set-workspace: check-run-deps
-	terraform init -backend-config=$(ENVIRONMENT).hcl -var-file=$(ENVIRONMENT).tfvars -reconfigure; \
+set-workspace-dev: check-run-deps
+	@if [ "$(ENVIRONMENT)" != "dev" ]; then \
+		terraform init -backend-config=dev.hcl -reconfigure; \
+	else \
+		echo "$(BOLD)$(GREEN)dev workspace selected$(RESET)"; \
+	fi
+
+set-workspace-stage: check-run-deps
+	@if [ "$(ENVIRONMENT)" != "stage" ]; then \
+		terraform init -backend-config=stage.hcl -reconfigure; \
+	else \
+		echo "$(BOLD)$(GREEN)stage workspace selected$(RESET)"; \
+	fi
+set-workspace-prod: check-run-deps
+	@if [ "$(ENVIRONMENT)" != "prod" ]; then \
+		terraform init -backend-config=prod.hcl -reconfigure; \
+	else \
+		echo "$(BOLD)$(GREEN)prod workspace selected$(RESET)"; \
+	fi
 
 check-run-deps:
 	@if ! jq -h > /dev/null 2>&1; then \
@@ -63,17 +80,17 @@ install: check-install-deps ## Download and install terraform in /usr/local/bin/
 	@sudo mv -f -v /tmp/terraform /usr/local/bin/terraform
 	@terraform -version
 
-dev: check-run-deps set-workspace generate-auto-vars ## Select the dev workspace.
+dev: check-run-deps set-workspace-dev generate-auto-vars ## Select the dev workspace.
 	@if [ "$(ENVIRONMENT)" == "dev" ]; then \
 		echo "$(BOLD)$(GREEN)dev workspace selected$(RESET)"; \	
 	fi
 
-prod: check-run-deps set-workspace generate-auto-vars ## Select the production workspace.
+prod: check-run-deps set-workspace-prod generate-auto-vars ## Select the production workspace.
 	@if [ "$(ENVIRONMENT)" == "prod" ]; then \
 		echo "$(BOLD)$(GREEN)prod workspace selected$(RESET)"; \	
 	fi
 
-stage: check-run-deps set-workspace generate-auto-vars ## Select the stage workspace
+stage: check-run-deps set-workspace-stage generate-auto-vars ## Select the stage workspace
 	@if [ "$(ENVIRONMENT)" == "stage" ]; then \
 		echo "$(BOLD)$(GREEN)stage workspace selected$(RESET)"; \	
 	fi
