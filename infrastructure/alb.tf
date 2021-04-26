@@ -18,7 +18,7 @@ resource "aws_lb_target_group" "target" {
   tags = local.common_tags
 
   health_check {
-    path                = "/api"
+    path                = "/health"
     timeout             = "60"
     healthy_threshold   = "2"
     unhealthy_threshold = "4"
