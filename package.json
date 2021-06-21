@@ -17,6 +17,7 @@
     "deploy": "./scripts/deploy.sh $npm_package_config_projectName $npm_package_config_imageTag $npm_package_config_region",
     "initialize": "./scripts/init.sh",
     "start": "node server.js",
+    "start:all": "docker-compose up",
     "start:watch": "nodemon --debug=5858",
     "start:watch:debugger": "nodemon --inspect-brk=0.0.0.0:9229",
     "test": "jest --config=jest.config.js",
@@ -42,6 +43,5 @@
     "sonarqube-scanner": "^2.7.0",
     "ts-jest": "^26.5.4",
     "typescript": "^4.2.4"
-
   }
 }
