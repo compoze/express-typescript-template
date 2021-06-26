@@ -10,14 +10,15 @@ import {
     Response,
     SuccessResponse,
 } from "tsoa";
-/**
- * Example Express Controller. This demonstrates POST, GET, and GET :id
- */
+
 interface ValidateErrorJSON {
     message: "Validation failed";
     details: { [name: string]: unknown };
 }
 
+/**
+ * Example Express Controller. This demonstrates POST, GET, and GET :id
+ */
 @Route("posts")
 export class PostsController extends Controller {
     public path = '/posts'
@@ -32,6 +33,10 @@ export class PostsController extends Controller {
         }
     ]
 
+    /**
+     * Retrieves the details of an existing blog post.
+     * Supply the unique blog ID and receive corresponding blog details.
+     */
     @Get("{id}")
     public async getPost(@Path() id: number): Promise<Blog> {
 
@@ -45,12 +50,22 @@ export class PostsController extends Controller {
         return result;
     }
 
+    /**
+     * Retrieves all existing blog posts
+     */
     @Get()
     public async getAllPosts(): Promise<Blog[]> {
 
         return this.posts;
     }
 
+    /**
+     * Create a new blog post
+     * @param id The blogs unique identifier
+     * @param author Name of blog author
+     * @param content Content of blog
+     * @param title Title of blog
+     */
     @Response<ValidateErrorJSON>(422, "Validation Failed")
     @SuccessResponse("201", "Created") // Custom success response
     @Post()

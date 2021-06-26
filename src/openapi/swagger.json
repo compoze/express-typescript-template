@@ -7,20 +7,24 @@
 		"responses": {},
 		"schemas": {
 			"Blog": {
-				"description": "This is a description of a model",
+				"description": "Blog post",
 				"properties": {
 					"id": {
 						"type": "number",
-						"format": "double"
+						"format": "double",
+						"description": "id The blogs unique identifier"
 					},
 					"author": {
-						"type": "string"
+						"type": "string",
+						"description": "author Name of blog author"
 					},
 					"content": {
-						"type": "string"
+						"type": "string",
+						"description": "content Content of blog"
 					},
 					"title": {
-						"type": "string"
+						"type": "string",
+						"description": "title Title of blog"
 					}
 				},
 				"required": [
@@ -83,6 +87,7 @@
 						}
 					}
 				},
+				"description": "Retrieves the details of an existing blog post.\nSupply the unique blog ID and receive corresponding blog details.",
 				"security": [],
 				"parameters": [
 					{
@@ -115,6 +120,7 @@
 						}
 					}
 				},
+				"description": "Retrieves all existing blog posts",
 				"security": [],
 				"parameters": []
 			},
@@ -145,6 +151,7 @@
 						}
 					}
 				},
+				"description": "Create a new blog post",
 				"security": [],
 				"parameters": [],
 				"requestBody": {
