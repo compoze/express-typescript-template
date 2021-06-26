@@ -16,8 +16,8 @@ class App {
         this.app = express();
         this.port = appInit.port;
 
-        this.routes();
         this.middlewares(appInit.middleWares);
+        this.routes();
         this.template();
         this.documentation()
         this.configureDatabase();
@@ -66,6 +66,12 @@ class App {
             res.send('OK');
         });
 
+        //handle not found paths
+        this.app.use(function notFoundHandler(_req, res) {
+            res.status(404).send({
+                message: "Not Found",
+            });
+        });
         //add cors
         this.app.use(cors());
         this.app.listen(this.port, () => {

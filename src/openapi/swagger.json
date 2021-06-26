@@ -6,7 +6,8 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
-			"IPost": {
+			"Blog": {
+				"description": "This is a description of a model",
 				"properties": {
 					"id": {
 						"type": "number",
@@ -27,6 +28,29 @@
 					"author",
 					"content",
 					"title"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ValidateErrorJSON": {
+				"description": "Example Express Controller. This demonstrates POST, GET, and GET :id",
+				"properties": {
+					"message": {
+						"type": "string",
+						"enum": [
+							"Validation failed"
+						],
+						"nullable": false
+					},
+					"details": {
+						"properties": {},
+						"additionalProperties": {},
+						"type": "object"
+					}
+				},
+				"required": [
+					"message",
+					"details"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -53,7 +77,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/IPost"
+									"$ref": "#/components/schemas/Blog"
 								}
 							}
 						}
@@ -83,7 +107,7 @@
 							"application/json": {
 								"schema": {
 									"items": {
-										"$ref": "#/components/schemas/IPost"
+										"$ref": "#/components/schemas/Blog"
 									},
 									"type": "array"
 								}
@@ -103,9 +127,19 @@
 							"application/json": {
 								"schema": {
 									"items": {
-										"$ref": "#/components/schemas/IPost"
+										"$ref": "#/components/schemas/Blog"
 									},
 									"type": "array"
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Validation Failed",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ValidateErrorJSON"
 								}
 							}
 						}
@@ -118,7 +152,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/IPost"
+								"$ref": "#/components/schemas/Blog"
 							}
 						}
 					}

@@ -1,8 +1,8 @@
-import { Request, Response } from 'express'
+import { NextFunction, Request, Response } from 'express'
 
-const loggerMiddleware = (req: Request, resp: Response, next) => {
+const loggerMiddleware = (req: Request, resp: Response, next: NextFunction) => {
     
-    console.log('Request logged:', req.method, req.path)
+    console.log('Request logged:', req.method, req.path, req.body);
     next()
 }
 

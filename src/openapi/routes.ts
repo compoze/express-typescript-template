@@ -9,13 +9,22 @@ import * as express from 'express';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
 const models: TsoaRoute.Models = {
-    "IPost": {
+    "Blog": {
         "dataType": "refObject",
         "properties": {
             "id": {"dataType":"double","required":true},
             "author": {"dataType":"string","required":true},
             "content": {"dataType":"string","required":true},
             "title": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ValidateErrorJSON": {
+        "dataType": "refObject",
+        "properties": {
+            "message": {"dataType":"enum","enums":["Validation failed"],"required":true},
+            "details": {"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"any"},"required":true},
         },
         "additionalProperties": false,
     },
@@ -76,7 +85,7 @@ export function RegisterRoutes(app: express.Router) {
         app.post('/posts',
             function PostsController_createPost(request: any, response: any, next: any) {
             const args = {
-                    post: {"in":"body","name":"post","required":true,"ref":"IPost"},
+                    blog: {"in":"body","name":"blog","required":true,"ref":"Blog"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
