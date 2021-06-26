@@ -39,11 +39,14 @@ class App {
     }
 
     private async documentation() {
-        this.app.use("/api-docs", serve, async (_req: express.Request, res: express.Response) => {
+        this.app.use("/swagger-ui", serve, async (_req: express.Request, res: express.Response) => {
             return res.send(
                 generateHTML(swaggerConfig)
             );
         });
+        this.app.use("/api-docs", (req, res) => {
+            res.send(swaggerConfig);
+        })
     }
 
     private async configureDatabase() {
