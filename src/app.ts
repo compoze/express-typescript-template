@@ -2,19 +2,24 @@ import { typeOrmConfig } from './config/database.config';
 import * as express from 'express'
 import { Application } from 'express'
 import { createConnection } from 'typeorm';
+import { RegisterRoutes } from "./openapi/routes";
+import * as swaggerConfig from './openapi/swagger.json';
+
+import { generateHTML, serve } from "swagger-ui-express";
 const cors = require('cors');
 
 class App {
     public app: Application
     public port: number
 
-    constructor(appInit: { port: number; middleWares: any; controllers: any; }) {
+    constructor(appInit: { port: number; middleWares }) {
         this.app = express();
         this.port = appInit.port;
-        
+
+        this.routes();
         this.middlewares(appInit.middleWares);
-        this.routes(appInit.controllers);
         this.template();
+        this.documentation()
         this.configureDatabase();
     }
 
@@ -24,14 +29,21 @@ class App {
         })
     }
 
-    private routes(controllers: { forEach: (arg0: (controller: any) => void) => void; }) {
-        controllers.forEach(controller => {
-            this.app.use('/', controller.router)
-        })
+    private routes() {
+        RegisterRoutes(this.app);
+
     }
 
     private template() {
         this.app.set('view engine', 'pug')
+    }
+
+    private async documentation() {
+        this.app.use("/api-docs", serve, async (_req: express.Request, res: express.Response) => {
+            return res.send(
+                generateHTML(swaggerConfig)
+            );
+        });
     }
 
     private async configureDatabase() {

@@ -1,4 +1,4 @@
-version: "2.4"
+version: "3.8"
 # version 2.x allows you to use depends_on with conditions that cause
 # the node app to wait on mongo to respond to a healthy healthcheck before node is started
 # v3.x doesn't have this feature yet, and is only needed if you want to use Swarm
