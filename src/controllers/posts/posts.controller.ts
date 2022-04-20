@@ -10,6 +10,7 @@ import {
     Response,
     SuccessResponse,
 } from "tsoa";
+import { NotFound } from 'error/not.found';
 
 interface ValidateErrorJSON {
     message: "Validation failed";
@@ -40,11 +41,10 @@ export class PostsController extends Controller {
     @Get("{id}")
     public async getPost(@Path() id: number): Promise<Blog> {
 
-        let result: Blog = this.posts.find(post => post.id == id)
+        let result: Blog | undefined = this.posts.find(post => post.id == id)
 
         if (!result) {
-            this.setStatus(404);
-            return;
+            throw new NotFound('Blog not found');
         }
 
         return result;
@@ -77,4 +77,8 @@ export class PostsController extends Controller {
         this.setStatus(201);
         return this.posts;
     }
+}
+
+interface Error {
+    message: string
 }

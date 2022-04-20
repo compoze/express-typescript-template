@@ -1,3 +1,4 @@
+import { NotFound } from "../error/not.found";
 import {
     Response,
     Request,
@@ -13,6 +14,13 @@ const globalErrorHandler = (err: unknown, req: Request, res: Response, next: Nex
         return res.status(422).json({
             message: "Validation Failed",
             details: err?.fields,
+        });
+    }
+    if (err instanceof NotFound) {
+        console.warn(`Resource Not Found Error for ${req.path}:`, err.message);
+        return res.status(422).json({
+            message: "Validation Failed",
+            details: err?.message,
         });
     }
     if (err instanceof Error) {

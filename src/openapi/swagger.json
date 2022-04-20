@@ -37,7 +37,6 @@
 				"additionalProperties": false
 			},
 			"ValidateErrorJSON": {
-				"description": "Example Express Controller. This demonstrates POST, GET, and GET :id",
 				"properties": {
 					"message": {
 						"type": "string",
